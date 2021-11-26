@@ -24,7 +24,7 @@ c1inton's OSCP CheatSheet.
 - [ ] Check if you can upload a file to trigger a webshell through the webapp
 - [ ] Check if you can download backup files to extract included passwords
 - [ ] Check the version of FTP for exploits
-```sh
+```bash
 ftp $ip
 
 #Brute force
@@ -36,7 +36,7 @@ hydra -V -f -L username.txt -P password.txt ftp://$ip -u -vV
 - [ ] Check version for vulnerabilities
 - [ ] (Only when getting desperate) Try brute force with Hydra, Medussa, ...
 ```bash
-ssh $user@~~$ip~~
+ssh $user@$ip
 ssh $user@$ip -i user.key
 
 #Brute force
@@ -70,6 +70,7 @@ hydra -l gibson -P /tmp/alpha.txt -T 20 $ip ssh
 
 
 ```python
+#test
 s = "Python syntax highlighting"
 print s
 ```

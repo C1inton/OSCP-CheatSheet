@@ -26,7 +26,6 @@ c1inton's OSCP CheatSheet.
 - [ ] Check the version of FTP for exploits
 ```bash
 ftp $ip
-
 #Brute force
 hydra -V -f -L username.txt -P password.txt ftp://$ip -u -vV 
 ```
@@ -38,11 +37,9 @@ hydra -V -f -L username.txt -P password.txt ftp://$ip -u -vV
 ```bash
 ssh $user@~~$ip~~
 ssh $user@$ip -i user.key
-
 #Brute force
 hydra -v  -L user.txt -P /usr/share/wordlists/rockyou.txt -t 16 $ip ssh
 hydra -l gibson -P /tmp/alpha.txt -T 20 $ip ssh
-
 #SSH key file
 /home/user/.ssh/id_rsa
 /home/user/.ssh/authorized_keys

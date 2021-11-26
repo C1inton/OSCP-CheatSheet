@@ -1,6 +1,7 @@
 # OSCP-CheatSheet
 
 c1inton's OSCP CheatSheet.
+
   - [Port](#port)
     - [21-FTP](#21-ftp)
     - [22-SSH](#22-ssh)
@@ -18,12 +19,11 @@ c1inton's OSCP CheatSheet.
 
 ## Port
 ### 21-FTP
+- [] aaa
 
 ### 22-SSH
 
 ### 25-SMTP
-
-### 53-DNS
 
 ### 80/443-HTTP(S)
 

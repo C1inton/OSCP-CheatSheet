@@ -24,7 +24,7 @@ c1inton's OSCP CheatSheet.
 - [ ] Check if you can upload a file to trigger a webshell through the webapp
 - [ ] Check if you can download backup files to extract included passwords
 - [ ] Check the version of FTP for exploits
-```powershell
+```sh
 ftp $ip
 
 #Brute force

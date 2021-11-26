@@ -1,8 +1,6 @@
 # OSCP-CheatSheet
 
 c1inton's OSCP CheatSheet.
-
-
 - [OSCP-CheatSheet](#oscp-cheatsheet)
   - [Port](#port)
     - [21-FTP](#21-ftp)
@@ -13,15 +11,21 @@ c1inton's OSCP CheatSheet.
   - [Linux Privilege Escalation](#linux-privilege-escalation)
   - [Windows Privilege Escalatio](#windows-privilege-escalatio)
   - [Useful Commands](#useful-commands)
+    - [File Transfer](#file-transfer)
+    - [Reverse Shell](#reverse-shell)
     - [Shell Spawning](#shell-spawning)
   - [Buffer Overflow](#buffer-overflow)
 
 
 ## Port
 ### 21-FTP
+
 ### 22-SSH
+
 ### 25-SMTP
+
 ### 53-DNS
+
 ### 80/443-HTTP(S)
 
 ## Linux Privilege Escalation
@@ -29,6 +33,9 @@ c1inton's OSCP CheatSheet.
 ## Windows Privilege Escalatio
 
 ## Useful Commands
+### File Transfer
+
+### Reverse Shell
 
 ### Shell Spawning
 

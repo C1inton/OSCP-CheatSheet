@@ -1,5 +1,4 @@
 # OSCP-CheatSheet
-=====
 
 ## How are you?
 ---

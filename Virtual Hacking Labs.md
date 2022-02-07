@@ -1,5 +1,8 @@
 ## Virtual Hacking Labs
 
+- [Beginner](#Beginner)
+
+
 ### Beginner
 #### 10.11.1.36 (Steven)
 ```bash
@@ -83,5 +86,33 @@ Escalate -> sudo /sbin/reboot
 
 #### 10.11.1.109 (AS45)
 ```bash
+Foothold -> Found Apache Struts 2
+Exploit -> Public RCE 
 
+https://www.exploit-db.com/exploits/41570
+python 41570.py http://10.11.1.109:8080/struts2-rest-showcase/orders/6 whoami
+```
+
+#### 10.11.1.113 (Anthony)
+```bash
+Foothold -> Found Port 80 and It is gitstack
+Exploit -> Public RCE
+https://www.exploit-db.com/exploits/43777
+```
+
+#### 10.11.1.124 (Breeze)
+```bash
+
+```
+
+#### 10.11.1.177 (CMS01)
+```bash
+Foothold -> Found Joomla v 3.6.3
+
+Use Joomraa.py
+https://github.com/XiphosResearch/exploits/tree/master/Joomraa
+Login and read administrator password
+
+Exploit -> Login with Admin Credential then upload shell.php
+Escalate -> read /var/www/html/configuration.php and found root password
 ```

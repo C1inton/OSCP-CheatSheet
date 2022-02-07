@@ -1,7 +1,7 @@
 ## Virtual Hacking Labs
 
 - [Beginner](#Beginner)
-
+- [Advance](#advance)
 
 ### Beginner
 #### 10.11.1.36 (Steven)
@@ -102,7 +102,9 @@ https://www.exploit-db.com/exploits/43777
 
 #### 10.11.1.124 (Breeze)
 ```bash
-
+Foothold -> Found Port 80 and It is Sync Breeze Enterprise v8.9.24
+Exploit -> Public RCE
+https://zerontek.blogspot.com/2020/09/hacking-wakthrough-sync-breeze.html?fbclid=IwAR30vTktd0Rt_aEAkAEwCtCiODRz4i0Le_ifftmDPQ0ZV0m44kznlvR2O2o
 ```
 
 #### 10.11.1.177 (CMS01)
@@ -115,4 +117,23 @@ Login and read administrator password
 
 Exploit -> Login with Admin Credential then upload shell.php
 Escalate -> read /var/www/html/configuration.php and found root password
+```
+
+### Advance
+
+#### 10.11.1.2 (Lucky)
+```bash
+Foothold -> Found SMB was Open
+Exploit -> Upload PHP shell via SMB
+Escalate -> Use dirty cow
+https://gist.github.com/scumjr/17d91f20f73157c722ba2aea702985d2
+```
+
+#### 10.11.1.2 (Techblog)
+```bash
+Foothold -> Found Website use Wordpress and found Wordpress Site Import 1.0.1 Then LFI to read wp-config.php
+https://10.11.1.3/wp-content/plugins/site-import/admin/page.php?url=../../../../wp-config.php
+Exploit -> Edit Page in wp-admin (PHP Shell)
+Escalate -> Use dirty cow
+https://www.exploit-db.com/exploits/40616
 ```

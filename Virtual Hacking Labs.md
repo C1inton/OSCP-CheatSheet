@@ -1,6 +1,6 @@
 ## Virtual Hacking Labs
 
-- [Beginner](#Beginner)
+- [Beginner](#beginner)
 - [Advance](#advance)
 
 ### Beginner

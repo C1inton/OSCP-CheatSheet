@@ -17,6 +17,7 @@ Active Directory follows a clear hierarchy, from top to bottom. In that hierarch
       - [Mimikatz](#mimikatz)
       - [Remote Desktop Protocol](#remote-desktop-protocol)
       - [Kerberoast (Service Account Attacks)](#kerberoast-service-account-attacks)
+      - [Password Spray Attack (Low and Slow Password Guessing)](#password-spray-attack-low-and-slow-password-guessing)
 
 ### Enumeration
 
@@ -312,4 +313,14 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
   Rubeus.exe kerberoast /outfile:<fileName> /domain:<DomainName> /creduser:<username> /credpassword:<password>
   ```
 
+#### Password Spray Attack (Low and Slow Password Guessing)
+  If we have harvest some passwords by compromising a user account, we can use this method to try and exploit password reuse 
+  on other domain accounts.
+
+  **Tools:**
+  - [DomainPasswordSpray](https://github.com/dafthack/DomainPasswordSpray)
+  - [CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec)
+  - [Invoke-CleverSpray](https://github.com/wavestone-cdt/Invoke-CleverSpray)
+  - [Spray](https://github.com/Greenwolf/Spray)
+  - [Spray-Passwords](https://github.com/ZilentJack/Spray-Passwords)
 

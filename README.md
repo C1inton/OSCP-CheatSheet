@@ -208,9 +208,37 @@ hydra -L username.txt -P password.txt $ip smb -V -f
 
 ```
 ## Linux Privilege Escalation
-find / -perm -u=s -type f 2>/dev/null
 
+- [ ] Kernel Exploits (Last Resort)
+- [ ] Service Exploits
+- [ ] Weak File Permissions
+- [ ] Sudo 
+  - [ ] LD_PRELOAD
+  - [ ] LD_LIBRARY_PATH
+- [ ] Cron jobs
+  - [ ] PATH Environment
+  - [ ] Wildcards & Filenames
+- [ ] SUID/SGID Excutables
+  - [ ] Shared Object Injection
+  - [ ] PATH Environment Variable
+  - [ ] Abusing Shell Features (Bash < 4.2-048)
+  - [ ] SHELLOPTS=xtrace
+- [ ] Password & Keys
+- [ ] NFS
+```bash
+#Finding SUID/SGID Executables
+find / -perm -u=s -type f 2>/dev/null
+find / -perm -4000 -type f -exec ls -la {} 2>/dev/null \;
+find / -uid 0 -perm -4000 -type f 2>/dev/null
+find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2>/dev/null
+
+#Create Password Hash for /etc/passwd
+openssl passwd "password"
+
+#GTFOBins
 https://gtfobins.github.io/
+
+``` 
 ## Windows Privilege Escalation
 
 ## Useful Commands

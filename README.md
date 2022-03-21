@@ -232,16 +232,19 @@ find / -perm -4000 -type f -exec ls -la {} 2>/dev/null \;
 find / -uid 0 -perm -4000 -type f 2>/dev/null
 find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2>/dev/null
 
+#Finding Writable Files
+find -type f -maxdepth 1 -writable
+
 #Create Password Hash for /etc/passwd
 openssl passwd "password"
 
 #GTFOBins
 https://gtfobins.github.io/
-
 ``` 
 ## Windows Privilege Escalation
 
 ## Useful Commands
+python3 -c 'import pty; pty.spawn("/bin/bash")'
 
 ### Pivoting with Chisel
 ```bash

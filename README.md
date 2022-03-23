@@ -187,6 +187,7 @@ showmount -e $ip
 - [ ] Check for EternalBlue
 - [ ] Check samba version (if Linux)
 ```bash
+smbclient -L $ip
 smbclient //$ip//path
 
 #Anonymous login
@@ -200,13 +201,22 @@ sudo mount -t cifs -o 'username= ,password= ' //$ip/path /tmp
 
 #Brute force
 hydra -L username.txt -P password.txt $ip smb -V -f
+crackmapexec smb $ip -U user.txt -p users --continue-on-success 
+
+#Get RPC session & List users
+rpcclient -U "" -N $ip
+rpcclient $> querydispinfo
 ```
 ### 161-SNMP
 - [ ] Try the default community strings 'public' and 'private'
 - [ ] Enumerate version of OS/ users /processes
 ```bash
-
+#Enumerate Community strings
+./onesixtyone -c /usr/share/seclists/Discovery/SNMP/common-snmp-community-strings.txt $ip
+snmp-check $ip -c public
 ```
+
+
 ## Linux Privilege Escalation
 
 - [ ] Kernel Exploits (Last Resort)
@@ -263,6 +273,7 @@ https://gtfobins.github.io/
 ```
 ## Useful Commands
 python3 -c 'import pty; pty.spawn("/bin/bash")'
+python3 /usr/share/doc/python3-impacket/examples/psexec.py administrator@10.10.10.100
 
 ### Pivoting with Chisel
 ```bash

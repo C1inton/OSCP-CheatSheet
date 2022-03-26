@@ -269,11 +269,12 @@ https://gtfobins.github.io/
 - [ ] Token Impersonation
 - [ ] Port Forwarding
 ```bash
-
+python wes.py systeminfo.txt -i 'Elevation of Privilege' --exploits-only | less
 ```
 ## Useful Commands
 python3 -c 'import pty; pty.spawn("/bin/bash")'
 python3 /usr/share/doc/python3-impacket/examples/psexec.py administrator@10.10.10.100
+rdesktop 10.10.97.122 -u Administrator -r disk:linux=/home/kali/Desktop
 
 ### Pivoting with Chisel
 ```bash

